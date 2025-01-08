@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import Card from './Card';
 
 export default function Board() {
   const [pokemonData, setPokemonData] = useState([]);
@@ -16,19 +17,21 @@ export default function Board() {
     'venusaur',
     'dragonite',
     'flygon',
-  ];
-
+  ].map(name => ({
+    id: crypto.randomUUID(),
+    name
+  }));
 
   async function getPokemonData() {
     try {
       const results = await Promise.all(
         pokemonList.map(async (pokemon) => {
           const response = await fetch(
-            `https://pokeapi.co/api/v2/pokemon/${pokemon}/`
+            `https://pokeapi.co/api/v2/pokemon/${pokemon.name}/`
           );
           const data = await response.json();
           return {
-            name: pokemon,
+            ...pokemon,
             imageUrl: data.sprites.front_default,
           };
         })
@@ -48,5 +51,11 @@ export default function Board() {
 
   //handle card click
 
-  return <div className="card-grid"></div>;
+  return (
+    <div className="card-grid">
+      {pokemonData.map(pokemon => (
+        <Card {...pokemon} key={pokemon.id} isClicked={false} />
+      ))}
+    </div>
+  )
 }
