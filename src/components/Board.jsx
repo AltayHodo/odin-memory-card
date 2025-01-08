@@ -1,30 +1,52 @@
 import { useState, useEffect } from 'react';
 
 export default function Board() {
-  const [pokemonList, setPokemonList] = useState([]);
-  const [pokemonUrl, setPokemonUrl] = useState("");
+  const [pokemonData, setPokemonData] = useState([]);
 
-  //fetch pokemon data, useEffect- setPokemonList with relevant data-
-  // manually retrieve 12 unique pokemon?
-  async function getPokemonUrl() {
-    let response = await fetch('https://pokeapi.co/api/v2/pokemon/clefairy/');
-    response = await response.json()
-    console.log(response.sprites.back_default);
-    setPokemonUrl(response.sprites.back_default);
+  const pokemonList = [
+    'mewtwo',
+    'pikachu',
+    'charizard',
+    'rayquaza',
+    'gengar',
+    'blaziken',
+    'greninja',
+    'garchomp',
+    'jigglypuff',
+    'venusaur',
+    'dragonite',
+    'flygon',
+  ];
+
+
+  async function getPokemonData() {
+    try {
+      const results = await Promise.all(
+        pokemonList.map(async (pokemon) => {
+          const response = await fetch(
+            `https://pokeapi.co/api/v2/pokemon/${pokemon}/`
+          );
+          const data = await response.json();
+          return {
+            name: pokemon,
+            imageUrl: data.sprites.front_default,
+          };
+        })
+      );
+      console.log(results);
+      setPokemonData(results);
+    } catch (error) {
+      alert('Error fetching Pokemon: ', error);
+    }
   }
 
   useEffect(() => {
-    getPokemonUrl();
-  }, [])
-
+    getPokemonData();
+  }, []);
 
   //shuffle logic
 
   //handle card click
 
-  return (
-    <div className="card-grid">
-      <img src={pokemonUrl} alt="" />
-    </div>
-  )
+  return <div className="card-grid"></div>;
 }
