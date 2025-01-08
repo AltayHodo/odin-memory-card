@@ -36,8 +36,8 @@ export default function Board() {
           };
         })
       );
-      console.log(results);
-      setPokemonData(results);
+      const shuffledResults = shuffleArray(results)
+      setPokemonData(shuffledResults);
     } catch (error) {
       alert('Error fetching Pokemon: ', error);
     }
@@ -58,6 +58,7 @@ export default function Board() {
     } else {
       setClickedPokemonIds((prev) => [...prev, pokemonId]);
       setCurrentScore(currentScore + 1);
+      shufflePokemonData();
       if (currentScore + 1 == 12) {
         alert('You won!');
         resetGame();
@@ -71,6 +72,7 @@ export default function Board() {
     }
     setCurrentScore(0);
     setClickedPokemonIds([]);
+    shufflePokemonData();
   }
 
   function shuffleArray(array) {
@@ -82,6 +84,11 @@ export default function Board() {
     return newArray;
   }
 
+  function shufflePokemonData(){
+    const shuffled = shuffleArray(pokemonData);
+    setPokemonData(shuffled);
+  }
+
   return (
     <>
       <div className="score-container">
@@ -91,11 +98,7 @@ export default function Board() {
       </div>
       <div className="card-grid">
         {pokemonData.map((pokemon) => (
-          <Card
-            {...pokemon}
-            key={pokemon.id}
-            handleClick={handleClick}
-          />
+          <Card {...pokemon} key={pokemon.id} handleClick={handleClick} />
         ))}
       </div>
     </>
