@@ -32,6 +32,7 @@ export default function Board() {
           const data = await response.json();
           return {
             ...pokemon,
+            name: pokemon.name[0].toUpperCase() + pokemon.name.slice(1),
             imageUrl: data.sprites.front_default,
           };
         })
@@ -96,10 +97,12 @@ export default function Board() {
           Current Score: {currentScore} Best Score: {bestScore}
         </span>
       </div>
-      <div className="card-grid">
-        {pokemonData.map((pokemon) => (
-          <Card {...pokemon} key={pokemon.id} handleClick={handleClick} />
-        ))}
+      <div className="grid-wrapper">
+        <div className="card-grid">
+          {pokemonData.map((pokemon) => (
+            <Card {...pokemon} key={pokemon.id} handleClick={handleClick} />
+          ))}
+        </div>
       </div>
     </>
   );
