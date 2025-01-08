@@ -17,9 +17,9 @@ export default function Board() {
     'venusaur',
     'dragonite',
     'flygon',
-  ].map(name => ({
+  ].map((name) => ({
     id: crypto.randomUUID(),
-    name
+    name,
   }));
 
   async function getPokemonData() {
@@ -47,15 +47,57 @@ export default function Board() {
     getPokemonData();
   }, []);
 
-  //shuffle logic
+  const [clickedPokemonIds, setClickedPokemonIds] = useState([]);
+  const [currentScore, setCurrentScore] = useState(0);
+  const [bestScore, setBestScore] = useState(0);
 
-  //handle card click
+  function handleClick(pokemonId) {
+    if (clickedPokemonIds.includes(pokemonId)) {
+      alert('Game Over!');
+      resetGame();
+    } else {
+      setClickedPokemonIds((prev) => [...prev, pokemonId]);
+      setCurrentScore(currentScore + 1);
+      if (currentScore + 1 == 12) {
+        alert('You won!');
+        resetGame();
+      }
+    }
+  }
+
+  function resetGame() {
+    if (currentScore > bestScore) {
+      setBestScore(currentScore);
+    }
+    setCurrentScore(0);
+    setClickedPokemonIds([]);
+  }
+
+  function shuffleArray(array) {
+    const newArray = [...array];
+    for (let i = newArray.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+    }
+    return newArray;
+  }
 
   return (
-    <div className="card-grid">
-      {pokemonData.map(pokemon => (
-        <Card {...pokemon} key={pokemon.id} isClicked={false} />
-      ))}
-    </div>
-  )
+    <>
+      <div className="score-container">
+        <span>
+          Current Score: {currentScore} Best Score: {bestScore}
+        </span>
+      </div>
+      <div className="card-grid">
+        {pokemonData.map((pokemon) => (
+          <Card
+            {...pokemon}
+            key={pokemon.id}
+            handleClick={handleClick}
+          />
+        ))}
+      </div>
+    </>
+  );
 }
