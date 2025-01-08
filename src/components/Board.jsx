@@ -37,7 +37,7 @@ export default function Board() {
           };
         })
       );
-      const shuffledResults = shuffleArray(results)
+      const shuffledResults = shuffleArray(results);
       setPokemonData(shuffledResults);
     } catch (error) {
       alert('Error fetching Pokemon: ', error);
@@ -85,7 +85,7 @@ export default function Board() {
     return newArray;
   }
 
-  function shufflePokemonData(){
+  function shufflePokemonData() {
     const shuffled = shuffleArray(pokemonData);
     setPokemonData(shuffled);
   }
@@ -97,12 +97,10 @@ export default function Board() {
           Current Score: {currentScore} Best Score: {bestScore}
         </span>
       </div>
-      <div className="grid-wrapper">
-        <div className="card-grid">
-          {pokemonData.map((pokemon) => (
-            <Card {...pokemon} key={pokemon.id} handleClick={handleClick} />
-          ))}
-        </div>
+      <div className="card-grid">
+        {pokemonData.map((pokemon) => (
+          <Card {...pokemon} key={pokemon.id} handleClick={handleClick} />
+        ))}
       </div>
     </>
   );
