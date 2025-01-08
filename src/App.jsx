@@ -1,10 +1,12 @@
 import { useState } from 'react'
-import './App.css'
+import Board from './components/Board'
+import './styles/App.css'
 
 function App() {
   return (
     <>
       <h1>Memory Card</h1>
+      <Board />
     </>
   )
 }
