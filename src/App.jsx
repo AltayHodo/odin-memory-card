@@ -5,7 +5,7 @@ import './styles/App.css'
 function App() {
   return (
     <>
-      <h1>Memory Card</h1>
+      <h1>Memory Game</h1>
       <Board />
     </>
   )

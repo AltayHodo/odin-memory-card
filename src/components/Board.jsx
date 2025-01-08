@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import Card from './Card';
+import Modal from './Modal';
 
 export default function Board() {
   const [pokemonData, setPokemonData] = useState([]);
@@ -51,18 +52,18 @@ export default function Board() {
   const [clickedPokemonIds, setClickedPokemonIds] = useState([]);
   const [currentScore, setCurrentScore] = useState(0);
   const [bestScore, setBestScore] = useState(0);
+  const [modalMessage, setModalMessage] = useState('');
 
   function handleClick(pokemonId) {
     if (clickedPokemonIds.includes(pokemonId)) {
-      alert('Game Over!');
-      resetGame();
+      setModalMessage('Game over!')
     } else {
       setClickedPokemonIds((prev) => [...prev, pokemonId]);
       setCurrentScore(currentScore + 1);
       shufflePokemonData();
       if (currentScore + 1 == 12) {
         alert('You won!');
-        resetGame();
+        setModalMessage('You Won!')
       }
     }
   }
@@ -73,6 +74,7 @@ export default function Board() {
     }
     setCurrentScore(0);
     setClickedPokemonIds([]);
+    setModalMessage('');
     shufflePokemonData();
   }
 
@@ -92,6 +94,9 @@ export default function Board() {
 
   return (
     <>
+    {modalMessage && (
+      <Modal message={modalMessage} onReset={resetGame} />
+    )}
       <div className="score-container">
         <span>
           Current Score: {currentScore} Best Score: {bestScore}
