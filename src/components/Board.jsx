@@ -62,7 +62,6 @@ export default function Board() {
       setCurrentScore(currentScore + 1);
       shufflePokemonData();
       if (currentScore + 1 == 12) {
-        alert('You won!');
         setModalMessage('You Won!')
       }
     }
